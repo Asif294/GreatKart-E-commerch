@@ -70,6 +70,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'ecomarch.wsgi.application'
 
+AUTH_USER_MODEL='users.Account'
 
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
