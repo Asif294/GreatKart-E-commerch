@@ -4,8 +4,6 @@
 <section class="section-content padding-y bg">
 <div class="container">
 
-<!-- ============================ COMPONENT 1 ================================= -->
-
 <div class="row">
 	<aside class="col-lg-9">
 <div class="card">
@@ -15,82 +13,110 @@
   <th scope="col">Product</th>
   <th scope="col" width="120">Quantity</th>
   <th scope="col" width="120">Price</th>
-  <th scope="col" class="text-right" width="200"> </th>
+  <th scope="col" class="text-right" width="200"></th>
 </tr>
 </thead>
 <tbody>
-<tr>
-	<td>
-		<figure class="itemside align-items-center">
-			<div class="aside"><img src="./images/items/11.jpg" class="img-sm"></div>
-			<figcaption class="info">
-				<a href="#" class="title text-dark">Camera Canon EOS M50 Kit</a>
-				<p class="text-muted small">Matrix: 25 Mpx <br> Brand: Canon</p>
-			</figcaption>
-		</figure>
-	</td>
-	<td> 
-		<!-- col.// -->
-					<div class="col"> 
-						<div class="input-group input-spinner">
-							<div class="input-group-prepend">
-							<button class="btn btn-light" type="button" id="button-plus"> <i class="fa fa-minus"></i> </button>
-							</div>
-							<input type="text" class="form-control"  value="1">
-							<div class="input-group-append">
-							<button class="btn btn-light" type="button" id="button-minus"> <i class="fa fa-plus"></i> </button>
-							</div>
-						</div> <!-- input-group.// -->
-					</div> <!-- col.// -->
-	</td>
-	<td> 
-		<div class="price-wrap"> 
-			<var class="price">$1156.00</var> 
-			<small class="text-muted"> $315.20 each </small> 
-		</div> <!-- price-wrap .// -->
-	</td>
-	<td class="text-right"> 
-	<a href="" class="btn btn-danger"> Remove</a>
-	</td>
-</tr>
+{% if cart_items %}
+    {% for cart_item in cart_items %}
+    <tr>
+        <td>
+            <figure class="itemside align-items-center">
+                <div class="aside">
+                    <img src="{{ cart_item.product.images.url }}" class="img-sm" alt="{{ cart_item.product.product_name }}">
+                </div>
+                <figcaption class="info">
+                    <a href="{{ cart_item.product.get_url }}" class="title text-dark">{{ cart_item.product.product_name }}</a>
+                    <p class="text-muted small">
+                        Category: {{ cart_item.product.category.category_name }} <br>
+                        In Stock: {{ cart_item.product.stock }}
+                    </p>
+                </figcaption>
+            </figure>
+        </td>
+        
+        <td>
+            <div class="col">
+                <div class="input-group input-spinner">
+                    <div class="input-group-prepend">
+                        <a href="{% url 'decrease_cart' cart_item.product.id %}" class="btn btn-light" type="button">
+                            <i class="fa fa-minus"></i>
+                        </a>
+                    </div>
+                    <input type="text" class="form-control text-center" value="{{ cart_item.quantity }}" readonly>
+                    <div class="input-group-append">
+                        <a href="{% url 'add_cart' cart_item.product.id %}" class="btn btn-light" type="button">
+                            <i class="fa fa-plus"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </td>
 
+        <td>
+            <div class="price-wrap">
+                <var class="price">৳{{ cart_item.sub_total }}</var>
+                <small class="text-muted">৳{{ cart_item.product.price }} each</small>
+            </div>
+        </td>
+
+        <td class="text-right">
+            <a href="{% url 'remove_cart_item' cart_item.product.id %}" class="btn btn-danger btn-sm">
+                Remove
+            </a>
+        </td>
+    </tr>
+    {% endfor %}
+{% else %}
+    <tr>
+        <td colspan="4">
+            <div class="card text-center p-4 my-4">
+                <i class="fa fa-shopping-cart fa-3x mb-3 text-muted"></i>
+                <h4 class="text-muted">Your cart is empty</h4>
+                <p><a href="{% url 'store' %}" class="btn btn-primary mt-2">Continue Shopping</a></p>
+            </div>
+        </td>
+    </tr>
+{% endif %}
 </tbody>
 </table>
 </div> <!-- card.// -->
 
-	</aside> <!-- col.// -->
-	<aside class="col-lg-3">
+</aside> <!-- col.// -->
 
-		<div class="card">
-		<div class="card-body">
-			<dl class="dlist-align">
-			  <dt>Total price:</dt>
-			  <dd class="text-right">$69.97</dd>
-			</dl>
-			<dl class="dlist-align">
-			  <dt>Tax:</dt>
-			  <dd class="text-right"> $10.00</dd>
-			</dl>
-			<dl class="dlist-align">
-			  <dt>Total:</dt>
-			  <dd class="text-right text-dark b"><strong>$59.97</strong></dd>
-			</dl>
-			<hr>
-			<p class="text-center mb-3">
-				<img src="{% static './images/misc/payments.png'%}" height="26">
-			</p>
-			<a href="./place-order.html" class="btn btn-primary btn-block"> Checkout </a>
-			<a href="./store.html" class="btn btn-light btn-block">Continue Shopping</a>
-		</div> 
-		</div> 
+<aside class="col-lg-3">
+    <div class="card">
+        <div class="card-body">
+        {% if cart_items %}
+            <dl class="dlist-align">
+              <dt>Total price:</dt>
+              <dd class="text-right">৳{{ total }}</dd>
+            </dl>
+            <dl class="dlist-align">
+              <dt>Tax (2%):</dt>
+              <dd class="text-right">৳{{ tax|floatformat:2 }}</dd>
+            </dl>
+            <dl class="dlist-align">
+              <dt>Grand Total:</dt>
+              <dd class="text-right text-dark b">
+                <strong>৳{{ grand_total|floatformat:2 }}</strong>
+              </dd>
+            </dl>
+            <hr>
+            <p class="text-center mb-3">
+                <img src="{% static 'images/misc/payments.png' %}" height="26">
+            </p>
+            <a href="#" class="btn btn-primary btn-block">Checkout</a>
+            <a href="{% url 'store' %}" class="btn btn-light btn-block">Continue Shopping</a>
+        {% else %}
+            <p class="text-center text-muted">No items in your cart.</p>
+            <a href="{% url 'store' %}" class="btn btn-primary btn-block">Go to Store</a>
+        {% endif %}
+        </div> 
+    </div> 
+</aside>
 
-</aside> 
-
-
-</div> 
-
-
+</div> <!-- row.// -->
 </div> 
 </section>
-
-{% endblock  %}
+{% endblock %}
