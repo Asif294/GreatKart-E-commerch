@@ -130,6 +130,8 @@
 		
 
 
+
+
         <a href="{{product.get_url}}"> <img src="{{ product.images.url }}" alt="{{ product.product_name }}"></a>
       </div>
       <figcaption class="info-wrap">
@@ -138,10 +140,12 @@
           <div class="price-wrap mt-2">
             <span class="price">${{ product.price }}</span>
           </div>
+
         </div>
         <a href="{% url 'add_cart' product.id%}" class="btn btn-block btn-success">Add to cart</a>
       </figcaption>
     </figure>
+	
   </div>
   {% endfor %}
 </div>
