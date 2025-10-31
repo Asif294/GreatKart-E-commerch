@@ -34,7 +34,7 @@ def add_cart(request, product_id):
 
 
 def decrease_cart(request, product_id):
-    """✅ Decrease quantity but don't delete item if 1"""
+ 
     cart = Cart.objects.get(cart_id=_cart_id(request))
     product = get_object_or_404(Product, id=product_id)
     try:
@@ -42,14 +42,14 @@ def decrease_cart(request, product_id):
         if cart_item.quantity > 1:
             cart_item.quantity -= 1
             cart_item.save()
-        # ✅ If quantity == 1, just keep it as 1 — don’t delete
+      
     except CartItem.DoesNotExist:
         pass
     return redirect('cart')
 
 
 def remove_cart_item(request, product_id):
-    """❌ Remove item completely from cart"""
+ 
     cart = Cart.objects.get(cart_id=_cart_id(request))
     product = get_object_or_404(Product, id=product_id)
     cart_item = CartItem.objects.get(product=product, cart=cart)
@@ -68,7 +68,7 @@ def cart(request, total=0, quantity=0, cart_items=None):
             total += (cart_item.product.price * cart_item.quantity)
             quantity += cart_item.quantity
 
-        tax = (2 * total) / 100  # 2% tax
+        tax = (2 * total) / 100  
         grand_total = total + tax
 
     except ObjectDoesNotExist:
