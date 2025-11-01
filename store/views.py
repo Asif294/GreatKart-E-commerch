@@ -6,6 +6,7 @@ from django.http import HttpResponse
 from carts.models import CartItem
 from django.core.paginator import EmptyPage,PageNotAnInteger,Paginator
 
+
 def store(request,category_slug=None):
     categories=None
     products=None
@@ -16,11 +17,13 @@ def store(request,category_slug=None):
         page=request.GET.get('page')
         pages_products=paginator.get_page(page)
         product_count=products.count()
+
     else:
         products = Product.objects.filter(is_available=True).order_by('id')
         paginator=Paginator(products,6)
         page=request.GET.get('page')
         pages_products=paginator.get_page(page)
+
         product_count=products.count()
     context = {
         'products': pages_products,
