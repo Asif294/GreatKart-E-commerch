@@ -21,5 +21,16 @@ class Product(models.Model):
         return self.product_name
      
 
+variation_category_choise=(
+    ('size','size'),
+    ('color','color')
+)
+
+class Variation(models.Model):
+    product=models.ForeignKey(Product,on_delete=models.CASCADE)
+    variation_category=models.CharField(max_length=100,choices=variation_category_choise)
+    variation_valu=models.CharField(max_length=100)
+    is_active =models.BooleanField(default=True)
+    created_date=models.DateField(auto_now=True)
 
 
