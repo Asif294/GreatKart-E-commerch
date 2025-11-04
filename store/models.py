@@ -33,4 +33,6 @@ class Variation(models.Model):
     is_active =models.BooleanField(default=True)
     created_date=models.DateField(auto_now=True)
 
+    def __str__(self):
+        return str(self.product)
 
