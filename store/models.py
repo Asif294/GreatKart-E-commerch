@@ -26,6 +26,8 @@ variation_category_choise=(
     ('color','color')
 )
 
+
+
 class Variation(models.Model):
     product=models.ForeignKey(Product,on_delete=models.CASCADE)
     variation_category=models.CharField(max_length=100,choices=variation_category_choise)

@@ -37,9 +37,9 @@ def product_detail(request, category_slug, product_slug):
         single_product = Product.objects.get(category__slug=category_slug, slug=product_slug)
         in_cart = CartItem.objects.filter(cart__cart_id=_cart_id(request), product=single_product).exists()
 
-        # get variations
         colors = single_product.variation_set.filter(variation_category='color', is_active=True)
         sizes = single_product.variation_set.filter(variation_category='size', is_active=True)
+
 
     except Exception as e:
         raise e
