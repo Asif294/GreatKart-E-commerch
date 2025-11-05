@@ -7,7 +7,7 @@ class ProductAdmin(admin.ModelAdmin):
 admin.site.register(Product,ProductAdmin)
 
 class VariationAdmin(admin.ModelAdmin):
-    list_display=('product','variation_category','variation_valu','is_active')
+    list_display=('product','variation_category','variation_value','is_active')
     list_editable =('is_active',)
 
 admin.site.register(Variation,VariationAdmin)

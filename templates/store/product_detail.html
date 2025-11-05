@@ -31,26 +31,26 @@
 
 <hr>
 	<div class="row">
-		<div class="item-option-select">
-			<h6>Choose Color</h6>
-			<select name="color" class="form-control">
-				{%for i in single_product.variation_set.all%}
-				<option value="{{i.variation_value}}">{{i.variation_value}}</option>
-				
-				{% endfor %}
-			</select>
-		</div>
-	</div> <!-- row.// -->
-	<div class="row">
-		<div class="item-option-select">
-			<h6>Select Size</h6>
-			<select name="size" class="form-control">
-				<option value="small">Small</option>
-				<option value="medium">Medium</option>
-				<option value="large">Large</option>
-			</select>
-		</div>
-	</div> <!-- row.// -->
+  <div class="item-option-select">
+    <h6>Choose Color</h6>
+    <select name="color" class="form-control">
+      {% for color in colors %}
+        <option value="{{ color.variation_value }}">{{ color.variation_value }}</option>
+      {% endfor %}
+    </select>
+  </div>
+</div>
+
+<div class="row">
+  <div class="item-option-select">
+    <h6>Select Size</h6>
+    <select name="size" class="form-control">
+      {% for size in sizes %}
+        <option value="{{ size.variation_value }}">{{ size.variation_value }}</option>
+      {% endfor %}
+    </select>
+  </div>
+</div>
 	<hr>
    {%if single_product.stock <= 0%}
    <h5 class="text-danger">Out of stock</h5>
